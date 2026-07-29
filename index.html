@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TukarX - Exchange & Validasi Kurs Dolar</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background-color: #0f172a; color: #f8fafc; line-height: 1.6; }
+        .container { max-width: 600px; margin: 40px auto; background: #1e293b; padding: 30px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.3); }
+        h1 { text-align: center; color: #38bdf8; margin-bottom: 10px; font-size: 24px; }
+        p.subtitle { text-align: center; color: #94a3b8; margin-bottom: 30px; font-size: 14px; }
+        .card { background: #0f172a; padding: 20px; border-radius: 8px; margin-bottom: 20px; border: 1px solid #334155; }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; color: #cbd5e1; font-size: 14px; }
+        input, select { width: 100%; padding: 12px; background: #1e293b; border: 1px solid #475569; color: #fff; border-radius: 6px; font-size: 16px; }
+        input:focus, select:focus { outline: none; border-color: #38bdf8; }
+        button { width: 100%; padding: 12px; background: #0284c7; color: white; border: none; border-radius: 6px; font-size: 16px; font-weight: bold; cursor: pointer; transition: background 0.2s; }
+        button:hover { background: #0369a1; }
+        .result-box { margin-top: 20px; padding: 15px; background: #064e3b; border: 1px solid #059669; border-radius: 6px; display: none; }
+        .result-box.error { background: #7f1d1d; border-color: #dc2626; }
+        .footer { text-align: center; margin-top: 20px; font-size: 12px; color: #64748b; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>TukarX Exchange</h1>
+        <p class="subtitle">Platform Informasi Kurs & Validasi Transaksi</p>
+
+        <!-- Bagian Cek Kurs / Simulasi -->
+        <div class="card">
+            <h3 style="margin-bottom: 15px; font-size: 18px; color: #38bdf8;">Kalkulator Kurs Dolar</h3>
+            <div class="form-group">
+                <label>Jumlah USD ($)</label>
+                <input type="number" id="amountUSD" placeholder="Contoh: 100" value="100" oninput="hitungKurs()">
+            </div>
+            <div class="form-group">
+                <label>Estimasi Kurs IDR (1 USD)</label>
+                <input type="text" id="rateIDR" value="15800" readonly style="background: #0f172a; color: #94a3b8;">
+            </div>
+            <div class="form-group">
+                <label>Total Rupiah (IDR)</label>
+                <input type="text" id="totalIDR" readonly style="font-weight: bold; color: #34d399;">
+            </div>
+        </div>
+
+        <!-- Bagian Simulasi Link Validasi / Cek Status -->
+        <div class="card">
+            <h3 style="margin-bottom: 15px; font-size: 18px; color: #38bdf8;">Validasi Tautan / Transaksi</h3>
+            <div class="form-group">
+                <label>Masukkan Kode / Token Validasi</label>
+                <input type="text" id="tokenInput" placeholder="Contoh: VALIDATE-998877">
+            </div>
+            <button onclick="cekValidasi()">Cek Status Validasi</button>
+            
+            <div id="resultBox" class="result-box">
+                <p id="resultText">Status validasi akan muncul di sini.</p>
+            </div>
+        </div>
+
+        <div class="footer">
+            &copy; 2026 TukarX Template. Gratis digunakan dan dimodifikasi.
+        </div>
+    </div>
+
+    <script>
+        function hitungKurs() {
+            let usd = document.getElementById('amountUSD').value;
+            let rate = 15800;
+            let total = usd * rate;
+            document.getElementById('totalIDR').value = "Rp " + total.toLocaleString('id-ID');
+        }
+        // Jalankan saat pertama load
+        hitungKurs();
+
+        function cekValidasi() {
+            let token = document.getElementById('tokenInput').value.trim();
+            let box = document.getElementById('resultBox');
+            let text = document.getElementById('resultText');
+            
+            box.style.display = "block";
+            
+            if(token === "") {
+                box.className = "result-box error";
+                text.innerHTML = "Mohon masukkan kode token validasi terlebih dahulu!";
+            } else if(token === "DEMO123") {
+                box.className = "result-box";
+                box.style.background = "#064e3b";
+                box.style.borderColor = "#059669";
+                text.innerHTML = "✅ <b>Berhasil:</b> Token valid! Transaksi Anda dinyatakan sah dan aktif.";
+            } else {
+                box.className = "result-box error";
+                text.innerHTML = "❌ <b>Gagal:</b> Token tidak ditemukan atau sudah kedaluwarsa.";
+            }
+        }
+    </script>
+
+</body>
+</html>
